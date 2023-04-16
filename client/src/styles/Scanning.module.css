@@ -1,0 +1,51 @@
+@media screen and (min-width: 375px) {
+    .scanning
+    {
+        min-height: 100vh;
+        padding: 112px 0 0 0;
+    }
+
+    .container
+    {
+        max-width: 335px;
+        margin: 0 auto;
+    }
+
+    .scanningIcon
+    {
+        position: absolute;
+        top: 210px;
+        left: 30%;
+    }
+
+    .scanningShot
+    {
+        margin-top: 75px;
+        padding: 0 41px 0;
+        width: 100%;
+        height: 159px;
+        background: #C8FA60;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .scanningAction, .scanningCameraShot
+    {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+        background-color: #F5F5F5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .scanningCameraShot
+    {
+        width: 85px;
+        height: 85px;
+        margin: 0 41px 0;
+    }
+}

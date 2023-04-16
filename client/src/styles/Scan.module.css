@@ -1,0 +1,17 @@
+@media screen and (min-width: 375px) {
+    .scanning
+    {
+        padding: 126px 0 42px 0;
+    }
+    .container
+    {
+        max-width: 335px;
+        margin: 0 auto;
+    }
+    .img
+    {
+        max-width: 299px;
+        display: block;
+        margin: 0 auto 238px;
+    }
+}
