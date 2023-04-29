@@ -1,0 +1,49 @@
+.webcam{
+    width: auto;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -25%;
+}
+
+.canvas{
+    width: 398px;
+    height: 299px;
+    position: absolute;
+    top: 25%;
+}
+
+.wrapper{
+    width: 90%;
+    height: 90%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 5%;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.screenshot{
+    filter: blur(2px) brightness(80%);
+}
+.scanningText{
+    position: absolute;
+    z-index: 50;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+}
+
+.spinner{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
