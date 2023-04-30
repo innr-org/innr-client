@@ -1,0 +1,99 @@
+.container {
+    background-color: #ffffff;
+    max-width: 335px;
+    margin: 0 auto;
+}
+
+.specialist__info {
+    margin-top: 23px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.specialist__text {
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+}
+
+.specialist__name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 25px;
+    color: #000000;
+}
+
+.specialist__type {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+    color: #000000;
+}
+
+.span {
+    font-weight: 500;
+}
+
+.specialist__card {
+    margin-top: 16px;
+    display: flex;
+}
+
+.specialist__key {
+    min-width: 99px;
+    margin-right: 22px;
+}
+
+.keys {
+    display: flex;
+    flex-direction: column;
+    gap: 8px 0px;
+}
+
+.keys__text {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 15px;
+    color: #000000;
+}
+
+.specialist__values {
+    display: flex;
+    flex-direction: column;
+}
+
+.values {
+    display: flex;
+    flex-direction: column;
+    gap: 8px 0px;
+}
+
+.values__text {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #000000;
+}
+
+.tags {
+    margin-top: 33px;
+}
+
+.tag__text {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 15px;
+    color: #000000;
+}
+
+.tag__names {
+    margin-top: 16px;
+    display: flex;
+    gap: 0px 10px;
+}
+
+.consultation {
+    margin-top: 124px;
+}
