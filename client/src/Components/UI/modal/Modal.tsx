@@ -3,6 +3,7 @@ import classes from "./Modal.module.css";
 
 interface ModalProps {
     children: ReactNode;
+    props: any;
     visible: boolean;
     setVisible: (visible: boolean) => void;
 }

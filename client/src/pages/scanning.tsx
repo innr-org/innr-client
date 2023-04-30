@@ -38,7 +38,7 @@ function scanning() {
 
     return (
         <>
-            <Modal style={{textAlign: 'center'}} visible={typeModalActive} setVisible={setTypeModalActive}>
+            <Modal visible={typeModalActive} setVisible={setTypeModalActive} style={{textAlign: 'center'}}>
                 <h2>Выберите часть лица для анализа</h2>
                 <div className={cl.typesBtnsWrapper}>
                     {analysisTypesBtns}
@@ -50,7 +50,7 @@ function scanning() {
                 <h2>Пожалуйста снимите все аксессуары и одежду с головы!</h2>
                 <br/>
                 <h2>Важно: "{selectedType.text}" должен/должна находится внутри отмеченной зоны (овала)</h2>
-                <Button disabled style={{padding: '10px 50px', color: 'darkred', marginTop: '40px'}}
+                <Button style={{padding: '10px 50px', color: 'darkred', marginTop: '40px'}}
                         onClick={() => setAlertModalActive(false)}
                 >
                     Закрыть X
