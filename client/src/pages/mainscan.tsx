@@ -1,5 +1,6 @@
 import React from 'react'
-import MainScan from '@/Components/MainScan'
+import MainScan from '@/Components/MainScan/MainScan'
+import Video from "@/Components/Video/Video";
 
 function scan() {
     return (

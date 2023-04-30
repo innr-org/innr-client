@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tensorflow-models/facemesh": "^0.0.5",
+    "@tensorflow/tfjs": "^4.4.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
+    "browser-env": "^3.3.0",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "next": "13.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-wavify": "^1.8.0",
+    "react-webcam": "^7.0.1",
+    "spinners-react": "^1.0.7",
     "typescript": "5.0.4"
   }
 }
