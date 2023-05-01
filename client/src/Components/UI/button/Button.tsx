@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import classes from './Button.module.css'
 
+interface Button{
+    children?: ReactNode;
+    props?: any;
+}
 
-function Button({children, ...props}) {
+function Button({children, ...props}:Button) {
     return (
-        <button disabled {...props} className={classes.btn}>{children}</button>
+        <button {...props} className={classes.btn}>{children}</button>
     );
 }
 

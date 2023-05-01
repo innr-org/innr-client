@@ -1,7 +1,7 @@
 import React from 'react'
-import classes from './MainScan.module.css'
-import AnalysisCard from '../AnalysisCard'
-import Footer from '../Footer'
+import classes from './MainScan/MainScan.module.css'
+import AnalysisCard from './AnalysisCard'
+import Footer from './Footer'
 
 function MainScan() {
     return (
