@@ -10,6 +10,11 @@
     min-width: 302px;
 }
 
+.create__account__btn.active{
+    cursor: pointer;
+    background: #C8FA60;
+}
+
 .innr__h1 {
     font-weight: 700;
     font-size: 32px;
@@ -160,7 +165,6 @@
     font-size: 16px;
     line-height: 20px;
     color: #ffffff;
-    cursor: pointer;
 }
 
 .create__account {
@@ -179,4 +183,10 @@
     line-height: 18px;
     color: #000000;
     margin-left: 5px;
+}
+
+.accept{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
 }

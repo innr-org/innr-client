@@ -1,13 +1,27 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Button from '../UI/button/Button'
 import classes from './RecommendationButtons.module.css'
+import Link from "next/link";
 
-function RecommendationButtons() {
+function RecommendationButtons({page}) {
+    console.log(page)
+    const activeResult = page === "Results" ? classes.active : ""
+    const activeRec = page === "Recommendations" ? classes.active : ""
     return (
         <div className={classes.btns}>
-            <button className={classes.btn}>1</button>
-            <button className={classes.btn}>2</button>
-            <button className={classes.btn}>Рекомендации</button>
+            <div className={classes.pages}>
+                <Link href="/results">
+                    <button className={classes.btn + " " + activeResult}>
+                        1
+                    </button>
+                </Link>
+                <Link href="/recommendations">
+                    <button className={classes.btn + " " + activeRec}>
+                        2
+                    </button>
+                </Link>
+            </div>
+            <button className={classes.pageName}>{page}</button>
         </div>
     );
 }

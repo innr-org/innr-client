@@ -58,12 +58,7 @@ function scanning() {
             </Modal>
             <section className={cl.scanning}>
                 <div className={cl.container}>
-                    <Video isClicked={isClicked} scanType={selectedType.value}/>
-                    <div className={cl.overlayWebcam}></div>
-                    <div className={cl.scanningIcon}>
-                        <img src="../scanIcons/dashed-ellipse.png" alt="dashed-circle" />
-                        <div className={cl.overlay}></div>
-                    </div>
+                    <Video isClicked={isClicked} setIsClicked={setIsClicked} scanType={selectedType.value}/>
                 </div>
                 <div className={cl.scanningShot}>
                     <div className={cl.scanningAction}></div>

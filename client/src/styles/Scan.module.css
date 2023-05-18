@@ -40,6 +40,11 @@
         z-index: 5;
     }
 
+    .warningText{
+        position: absolute;
+        bottom: -120px;
+    }
+
     /*waves effect on hover*/
     .waves{
         position: absolute;
@@ -70,13 +75,13 @@
         width: 100%;
     }
 
-    .wave:nth-of-type(1).waveActive{
+    .wave:nth-of-type(1){
         animation: wavyRipplesOnHover 1.5s infinite cubic-bezier(.57,.21,.69,1.25);
     }
-    .wave:nth-of-type(2).waveActive{
+    .wave:nth-of-type(2){
         animation: wavyRipplesOnHover 3s infinite cubic-bezier(.57,.21,.69,1.25);
     }
-    .wave:nth-of-type(3).waveActive{
+    .wave:nth-of-type(3){
         animation: wavyRipplesOnHover 5s infinite cubic-bezier(.57,.21,.69,1.25);
     }
 

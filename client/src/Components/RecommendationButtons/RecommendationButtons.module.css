@@ -1,12 +1,20 @@
 .btns
 {
-    width: 375px;
-    height: 91px;
+    max-width: 480px;
+    width: 100%;
+    padding: 10px 15px;
     background: #C8FA60;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 14px;
+    flex-wrap: wrap;
+}
+
+.pages{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 .btn
@@ -21,11 +29,12 @@
     font-size: 30px;
     line-height: 38px;
 }
-.btn:first-child
-{
-    border: 1px solid #000;
+
+.active{
+    border: 1px solid #000
 }
-.btn:last-child
+
+.pageName
 {
     padding: 6px 40px 6px 11px;
     width: 210px;

@@ -1,0 +1,7 @@
+.menu{
+    position: fixed;
+    right: 20px;
+    bottom: calc(100vh/4);
+    z-index: 9998;
+}
+

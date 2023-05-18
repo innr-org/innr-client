@@ -1,15 +1,76 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {useRouter} from "next/router";
+import axios from "axios";
 import styles from '../styles/Login.module.css';
 import Image from 'next/image';
 import green from '../../public/assets/images/green.svg';
 import lines from '../../public/assets/images/lines.svg';
 import facebook from '../../public/assets/images/fb.svg';
 import google from '../../public/assets/images/gg.svg';
+import Modal from "@/Components/UI/modal/Modal";
+import Button from "@/Components/UI/button/Button";
 
 
 function Login() {
+    const phoneNumInput = useRef(null)
+    const passwordInput = useRef(null)
+    const [isFailLogin, setIsFailLogin] = useState(false)
+    const querystring = require('qs');
+    const router = useRouter()
+
+    async function login(e){
+        e.preventDefault()
+
+        const details = {
+            'phone': '8888',
+            'password': 'abc123',
+        };
+        try{
+            const formBody: string[] = [];
+            for (const property in details) {
+                const encodedKey = encodeURIComponent(property);
+                const encodedValue = encodeURIComponent(details[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            const formBodyString = formBody.join("&");
+
+            const response = await fetch('http://164.92.164.196:8080/api/auth/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBodyString
+            })
+            console.log(response)
+
+            if(response.status===200){
+                console.log("Authorized")
+                router.push('/mainscan')
+            }
+            else if(response.status===401){
+                console.log("LOGIN ERROR")
+                setIsFailLogin(true)
+            }
+        }
+        catch (err) {
+            console.error(err)
+        }
+
+    }
+
+    function clearForm(){
+        phoneNumInput.current.value=""
+        passwordInput.current.value=""
+        setIsFailLogin(false)
+    }
+
     return (
         <div className={styles.container}>
+            <Modal visible={isFailLogin} setVisible={setIsFailLogin} className={styles.failLoginModal}>
+                <p>Ошибка при авторизации.</p>
+                <p>Неправильные данные. Попробуйте еще раз.</p>
+                <Button onClick={clearForm} className={styles.closeModal}>Закрыть</Button>
+            </Modal>
             <Image 
                 className={styles.green}
                 src={green} 
@@ -23,14 +84,14 @@ function Login() {
                 />
                 <h1 className={styles.welcome__h1}>Добро пожаловать!</h1>
             </div>
-            <form className={styles.login__form}>
-                <input type="email" className={styles.email} id='email' placeholder='Ваш e-mail' required/>
-                <input type="password" className={styles.password} id='password' placeholder='Пароль' required />
+            <form className={styles.login__form} onSubmit={(e) => login(e)}>
+                <input ref={phoneNumInput} type="text" className={styles.email} id='email' placeholder='Ваш номер телефона' required/>
+                <input ref={passwordInput} type="password" className={styles.password} id='password' placeholder='Пароль' required />
                 {/* <button className={styles.enter__btn}>Войти в систему</button> */}
                 <div className={styles.forget__password}>
                     <a href='#' className={styles.forget__password__a}>Забыли пароль?</a>
                 </div>
-                <input type="submit" className={styles.enter__btn} name="submit" id="submit"  value="Войти в систему"/>
+                <input onClick={(e) => login(e)} type="submit" className={styles.enter__btn} name="submit" id="submit"  value="Войти в систему"/>
             </form>
             <div className={styles.create__account}>
                 <p className={styles.create__account__p}>Еще нет аккаунта?</p>
