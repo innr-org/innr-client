@@ -5,10 +5,11 @@ interface ModalProps {
     children: ReactNode;
     props: any;
     visible: boolean;
+    className: String;
     setVisible: (visible: boolean) => void;
 }
 
-function Modal({ children, visible, setVisible, ...props }: ModalProps) {
+function Modal({ children, visible, setVisible, className, ...props }: ModalProps) {
     const rootClasses = [classes.myModal];
 
     if (visible) {
@@ -16,12 +17,11 @@ function Modal({ children, visible, setVisible, ...props }: ModalProps) {
     }
 
     return (
-        <div {...props}
-            className={rootClasses.join(' ')}
-            onClick={(e) => setVisible(false)}
+        <div className={rootClasses.join(' ')}
+             {...props}
         >
             <div
-                className={classes.myModalContent}
+                className={classes.myModalContent + " " + className}
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}

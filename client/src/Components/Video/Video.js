@@ -1,15 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {useSelector, useDispatch} from "react-redux";
+import {save, remove} from "@/slices/imageSlice";
 import * as tf from '@tensorflow/tfjs';
 import * as facemesh from '@tensorflow-models/facemesh';
-import { SpinnerCircular } from 'spinners-react';
 import Webcam from 'react-webcam';
 import cl from './Video.module.css';
-import {SpinnerDotted} from "spinners-react";
+import Modal from "@/Components/UI/modal/Modal";
+import Button from "@/Components/UI/button/Button";
+import {RootState} from "../../store";
+import { useRouter } from 'next/router'
 
-function Video({styles, isClicked, scanType}) {
+function Video({styles, isClicked, setIsClicked, scanType}) {
+    //router init
+    let router= useRouter()
+    //imageReducer init
+    const image = useSelector((state) => state.image.value)
+    const dispatch = useDispatch()
+    console.log(image)
+
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false)
+    const [isReady, setIsReady] = useState(false)
 
     // pause a webcam
     const [imageSrc, setImageSrc] = useState(null);
@@ -17,31 +29,27 @@ function Video({styles, isClicked, scanType}) {
     // running detection function
     useEffect(() => {
         if(isClicked){
-            handleCapture()
             runFacemesh()
         }
     }, [isClicked]);
 
-    function handleCapture(){
-        if (webcamRef.current) {
-            // Capture an image
-            const dataUrl = webcamRef.current.getScreenshot();
-            setImageSrc(dataUrl);
-        }
-    };
+
+
     // load facemesh
     async function runFacemesh() {
         try{
             setIsLoading(true)
             const net = await facemesh.load();
+            //dev
             // setInterval(() => detect(net), 100)
-            detect(net)
+            detect(net).catch(err => console.error("Landmark Detection Error: " + err))
 
         }catch (err){
             console.error(err)
         }
         finally{
             setIsLoading(false)
+            setIsReady(true)
         }
     }
 
@@ -61,10 +69,6 @@ function Video({styles, isClicked, scanType}) {
             webcamRef.current.video.width = videoWidth;
             webcamRef.current.video.height = videoHeight;
 
-            // set canvas width and height
-            canvasRef.current.width = videoWidth;
-            canvasRef.current.height = videoHeight;
-
             // make detections
             const prediction = await net.estimateFaces(video);
 
@@ -76,60 +80,75 @@ function Video({styles, isClicked, scanType}) {
 
             //To-Do: Optimize the code
             // cropping screenshot
-            if(scanType === "whole"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[143][0], prediction[0].scaledMesh[10][1],
-                    prediction[0].scaledMesh[372][0] - prediction[0].scaledMesh[143][0],
-                    prediction[0].scaledMesh[152][1] - prediction[0].scaledMesh[10][1],
-                    0, 0,
-                    prediction[0].scaledMesh[372][0] - prediction[0].scaledMesh[143][0],
-                    prediction[0].scaledMesh[152][1] - prediction[0].scaledMesh[10][1])
+            let meshSettings = {
+                x0: 143,
+                y0: 10,
+                dxInit: 372,
+                dyInit: 143,
             }
-            else if(scanType === "nose"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[112][0], prediction[0].scaledMesh[154][1],
-                    prediction[0].scaledMesh[341][0] - prediction[0].scaledMesh[112][0],
-                    prediction[0].scaledMesh[164][1] - prediction[0].scaledMesh[154][1],
-                    0, 0,
-                    prediction[0].scaledMesh[341][0] - prediction[0].scaledMesh[112][0],
-                    prediction[0].scaledMesh[164][1] - prediction[0].scaledMesh[154][1])
+
+            switch (scanType) {
+                case 'whole':
+                    meshSettings = {
+                        x0: 234,
+                        y0: 10,
+                        dxInit: 454,
+                        dyInit: 152,
+                    }
+                    break
+                case 'nose':
+                    meshSettings = {
+                        x0: 145,
+                        y0: 8,
+                        dxInit: 374,
+                        dyInit: 94,
+                    }
+                    break
+                case 'forehead':
+                    meshSettings = {
+                        x0: 162,
+                        y0: 10,
+                        dxInit: 389,
+                        dyInit: 9,
+                    }
+                    break
+                case 'leftСheek':
+                    meshSettings = {
+                        x0: 429,
+                        y0: 25,
+                        dxInit: 454,
+                        dyInit: 152,
+                    }
+                    break
+                case 'rightСheek':
+                    meshSettings = {
+                        x0: 234,
+                        y0: 25,
+                        dxInit: 209,
+                        dyInit: 152,
+                    }
+                    break
+                case 'chin':
+                    meshSettings = {
+                        x0: 234,
+                        y0: 25,
+                        dxInit: 209,
+                        dyInit: 152,
+                    }
+                    break
             }
-            else if(scanType === "forehead"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[54][0], prediction[0].scaledMesh[10][1]*0.8,
-                    prediction[0].scaledMesh[284][0] - prediction[0].scaledMesh[54][0],
-                    prediction[0].scaledMesh[168][1]*1.2 - prediction[0].scaledMesh[10][1],
-                    0, 0,
-                    prediction[0].scaledMesh[284][0] - prediction[0].scaledMesh[54][0],
-                    prediction[0].scaledMesh[168][1]*1.2 - prediction[0].scaledMesh[10][1])
-            }
-            else if(scanType === "leftСheek"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[234][0], prediction[0].scaledMesh[23][1],
-                    prediction[0].scaledMesh[245][0] - prediction[0].scaledMesh[234][0],
-                    prediction[0].scaledMesh[135][1] - prediction[0].scaledMesh[23][1],
-                    0, 0,
-                    prediction[0].scaledMesh[245][0] - prediction[0].scaledMesh[234][0],
-                    prediction[0].scaledMesh[135][1] - prediction[0].scaledMesh[23][1])
-            }
-            else if(scanType === "rightСheek"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[234][0], prediction[0].scaledMesh[23][1],
-                    prediction[0].scaledMesh[245][0] - prediction[0].scaledMesh[234][0],
-                    prediction[0].scaledMesh[135][1] - prediction[0].scaledMesh[23][1],
-                    0, 0,
-                    prediction[0].scaledMesh[245][0] - prediction[0].scaledMesh[234][0],
-                    prediction[0].scaledMesh[135][1] - prediction[0].scaledMesh[23][1])
-            }
-            else if(scanType === "chin"){
-                ctx.drawImage(webcamRef.current.video,
-                    prediction[0].scaledMesh[214][0], prediction[0].scaledMesh[17][1]*1.05,
-                    prediction[0].scaledMesh[364][0] - prediction[0].scaledMesh[135][0],
-                    prediction[0].scaledMesh[152][1] - prediction[0].scaledMesh[17][1],
-                    0, 0,
-                    prediction[0].scaledMesh[364][0] - prediction[0].scaledMesh[135][0]*0.8,
-                    prediction[0].scaledMesh[152][1] - prediction[0].scaledMesh[17][1]*0.9)
-            }
+
+            canvasRef.current.width = prediction[0].scaledMesh[meshSettings.dxInit][0] - prediction[0].scaledMesh[meshSettings.x0][0]
+            canvasRef.current.height = prediction[0].scaledMesh[meshSettings.dyInit][1] - prediction[0].scaledMesh[meshSettings.y0][1]
+
+            //drawing canvas
+            ctx.drawImage(webcamRef.current.video,
+                prediction[0].scaledMesh[meshSettings.x0][0], prediction[0].scaledMesh[meshSettings.y0][1],
+                prediction[0].scaledMesh[meshSettings.dxInit][0] - prediction[0].scaledMesh[meshSettings.x0][0],
+                prediction[0].scaledMesh[meshSettings.dyInit][1] - prediction[0].scaledMesh[meshSettings.y0][1],
+                0, 0,
+                prediction[0].scaledMesh[meshSettings.dxInit][0] - prediction[0].scaledMesh[meshSettings.x0][0],
+                prediction[0].scaledMesh[meshSettings.dyInit][1] - prediction[0].scaledMesh[meshSettings.y0][1])
 
 
             //DEV: drawing bounding box (real-time)
@@ -138,9 +157,9 @@ function Video({styles, isClicked, scanType}) {
             //     ctx.lineWidth = "4"
             //     ctx.strokeStyle = "blue"
             //     ctx.rect(
-            //         pred.scaledMesh[264][0], pred.scaledMesh[264][1],
-            //         pred.scaledMesh[351][0] - pred.scaledMesh[264][0],
-            //         pred.scaledMesh[394][1] - pred.scaledMesh[253][1]
+            //         pred.scaledMesh[234][0], pred.scaledMesh[149][1],
+            //         pred.scaledMesh[234][0] - pred.scaledMesh[4][0],
+            //         pred.scaledMesh[149][1] - pred.scaledMesh[144][1]
             //     )
             //     ctx.stroke()
             // })
@@ -149,19 +168,33 @@ function Video({styles, isClicked, scanType}) {
         }
     }
 
+    function closeResultsModal(){
+        setIsClicked(false)
+        setIsReady(false)
+    }
+
+    function saveResult(img){
+        dispatch(save(img))
+        router.push('/results')
+    }
+
     return (
         <>
+            {isLoading && <h2 className={cl.scanningText}>Пожалуйста не двигайтесь...</h2>}
         <div style={styles} className={cl.wrapper}>
-            <Webcam ref={webcamRef} className={cl.webcam} />
-            {imageSrc &&
+            <Webcam mirrored={true} ref={webcamRef}
+                    imageSmoothing={true}/>
                 <div>
-                    <img className={cl.screenshot} style={{ position: 'absolute', zIndex: 1, left: '-25%' }} src={imageSrc} alt="captured image" />
-                    {isLoading && <h2 className={cl.scanningText}>Scanning...</h2>}
-                    <SpinnerDotted className={cl.spinner} size={76} thickness={139} speed={100} color="rgba(150, 172, 57, 1)" enabled={isLoading}/>
+                    {isLoading ? <div className={cl.ovalBorderActive}></div> : <div className={cl.ovalBorder}></div>}
                 </div>
-            }
         </div>
-            <canvas ref={canvasRef} className={cl.canvas} style={{ position: 'absolute', zIndex: 20, left: '-80%' }}     />
+            <Modal visible={isReady} setVisible={setIsReady} className={cl.resultModal}>
+                <canvas ref={canvasRef} className={cl.canvas}/>
+                <div className={cl.resultBtns}>
+                    <Button className={cl.retryBtn} onClick={closeResultsModal}>Переснять?</Button>
+                    <Button className={cl.submitBtn} onClick={() => saveResult(canvasRef.current.toDataURL("image/jpg"))}>Подтвердить!</Button>
+                </div>
+            </Modal>
         </>
     );
 }

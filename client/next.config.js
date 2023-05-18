@@ -4,6 +4,17 @@ const nextConfig = {
   publicRuntimeConfig: {
     staticFolder: '/public',
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/login',
+        permanent: true,
+      },
+    ]
+  },
 }
+
+
 
 module.exports = nextConfig

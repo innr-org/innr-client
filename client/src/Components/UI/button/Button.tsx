@@ -3,12 +3,13 @@ import classes from './Button.module.css'
 
 interface Button{
     children?: ReactNode;
+    class?: String;
     props?: any;
 }
 
-function Button({children, ...props}:Button) {
+function Button({children, className, ...props}:Button) {
     return (
-        <button {...props} className={classes.btn}>{children}</button>
+        <button {...props} className={classes.btn + " " + className}>{children}</button>
     );
 }
 

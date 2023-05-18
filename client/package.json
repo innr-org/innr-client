@@ -3,25 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8080",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "@tensorflow-models/facemesh": "^0.0.5",
     "@tensorflow/tfjs": "^4.4.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
+    "@zeit/next-css": "^1.0.1",
+    "axios": "^1.4.0",
     "browser-env": "^3.3.0",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "next": "13.3.0",
+    "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-floating-button-menu": "^2.1.1",
+    "react-redux": "^8.0.5",
     "react-wavify": "^1.8.0",
     "react-webcam": "^7.0.1",
+    "redux": "^4.2.1",
     "spinners-react": "^1.0.7",
     "typescript": "5.0.4"
   }

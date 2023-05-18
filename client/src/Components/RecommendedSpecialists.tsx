@@ -32,7 +32,6 @@ function RecommendedSpecialists() {
             >
             </RecommendedSpecialistPerson>
 
-            <RecommendationButtons />
         </div>
     );
 }
