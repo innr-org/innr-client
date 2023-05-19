@@ -9,53 +9,38 @@ import facebook from '../../public/assets/images/fb.svg';
 import google from '../../public/assets/images/gg.svg';
 import Modal from "@/Components/UI/modal/Modal";
 import Button from "@/Components/UI/button/Button";
+import {useFetching} from "@/hooks/useFetching";
+import UserService from "@/API/UserService";
 
 
 function Login() {
+    const router = useRouter()
     const phoneNumInput = useRef(null)
     const passwordInput = useRef(null)
     const [isFailLogin, setIsFailLogin] = useState(false)
-    const querystring = require('qs');
-    const router = useRouter()
+    const [fetchLogin, isAuthorizing, error] = useFetching(async () => {
+        const loginResponse = await UserService.login({
+            'phone': '5555',
+            'password': 'abc123',
+        })
+
+        if(loginResponse.status===200){
+            console.log("Authorized")
+            router.push("/mainscan")
+        }
+        else{
+            console.log("Not Authorized")
+        }
+    })
+
+    useEffect(() => {
+        console.log(error)
+    }, [error])
 
     async function login(e){
         e.preventDefault()
 
-        const details = {
-            'phone': '8888',
-            'password': 'abc123',
-        };
-        try{
-            const formBody: string[] = [];
-            for (const property in details) {
-                const encodedKey = encodeURIComponent(property);
-                const encodedValue = encodeURIComponent(details[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
-            }
-            const formBodyString = formBody.join("&");
-
-            const response = await fetch('http://164.92.164.196:8080/api/auth/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: formBodyString
-            })
-            console.log(response)
-
-            if(response.status===200){
-                console.log("Authorized")
-                router.push('/mainscan')
-            }
-            else if(response.status===401){
-                console.log("LOGIN ERROR")
-                setIsFailLogin(true)
-            }
-        }
-        catch (err) {
-            console.error(err)
-        }
-
+        await fetchLogin()
     }
 
     function clearForm(){
