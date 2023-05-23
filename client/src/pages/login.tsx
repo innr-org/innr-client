@@ -29,13 +29,24 @@ function Login() {
     const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false)
     const [isPasswordValid, setIsPasswordValid] = useState(false)
 
+    const [isAuth, setIsAuth] = useState(false)
+
+
+    const details = {
+        'phone': '8888',
+        'password': 'abc123',
+    };
+
     async function login(e: any){
         e.preventDefault()
-
-        const details = {
-            'phone': '+7 776 521 3035',
-            'password': 'Sdfgh67@',
-        };
+        // const details = {
+        //     'phone': '+7 776 521 3035',
+        //     'password': 'Sdfgh67@',
+        // };
+        // const details = {
+        //     'phone': '8888',
+        //     'password': 'abc123',
+        // };
         // const details = {
         //     'phone': phoneNumInput.current?.value,
         //     'password': passwordInput.current?.value,
@@ -48,9 +59,7 @@ function Login() {
                 formBody.push(encodedKey + "=" + encodedValue);
             }
             const formBodyString = formBody.join("&");
-            console.log(formBodyString);
             
-
             const response = await fetch('http://164.92.164.196:8080/api/auth/token', {
                 method: 'POST',
                 headers: {
@@ -66,15 +75,15 @@ function Login() {
             }
             else if (response.status===401) {
                 console.log("LOGIN ERROR, 401 Unauthorized")
-                setIsFailLogin(true)
+                // setIsFailLogin(true)
+                // setIsAuth(false)
             }
         }
         catch (err) {
             console.error(err)
         }
-
     }
-    
+
 
     function clearForm()
     {
@@ -86,18 +95,32 @@ function Login() {
         }
     }
 
+
+    function checkAuth(event: ChangeEvent<HTMLInputElement>)
+    {
+        if (phoneNumInput.current !== null && passwordInput.current !== null)
+        {
+            if (phoneNumInput.current.value === details['phone'] && passwordInput.current.value === details['password'])
+            {
+                setIsAuth(true)
+            }
+            else
+            {
+                setIsAuth(false)
+            }
+        }
+    }
+
     function phoneNumberValidation(event: ChangeEvent<HTMLInputElement>)
     {
         if (phoneNumInput.current !== null)
         {   
             if (phoneNumberRegex.test(phoneNumInput.current.value))
             {
-                // console.log('valid')
                 setIsPhoneNumberValid(true)
             }
             else
             {
-                // console.log('invalid')
                 setIsPhoneNumberValid(false)
             }
         }
@@ -109,12 +132,10 @@ function Login() {
         {   
             if (passwordRegex.test(passwordInput.current.value))
             {
-                // console.log('valid')
                 setIsPasswordValid(true)
             }
             else
             {
-                // console.log('invalid')
                 setIsPasswordValid(false)
             }
         }
@@ -148,14 +169,19 @@ function Login() {
                     id='email'
                     placeholder='Ваш номер телефона'
                     required
-                    onChange={() => phoneNumberValidation()}
+                    // onChange={() => phoneNumberValidation()}
+                    // onChange={() => checkAuth(details['phone'], details['password'])}
+                    // проверка телефона и пароля
+                    onChange={() => checkAuth()}
                 />
-                { isPhoneNumberValid 
+
+                {/* { isPhoneNumberValid 
                     ? 
                     <p style={{color: '#C8FA60', fontSize: '16px', fontWeight: 700}}>Valid Phone Number</p>
                     :
                     <p style={{color: '#BF4342', fontSize: '16px', fontWeight: 700}}>Invalid Phone Number</p>
-                }
+                } */}
+                
                 <input
                     ref={passwordInput}
                     type="password"
@@ -163,14 +189,27 @@ function Login() {
                     id='password'
                     placeholder='Пароль'
                     required
-                    onChange={() => passwordValidation()}
+                    // onChange={() => passwordValidation()}
+                    // onChange={() => checkAuth(details['phone'], details['password'])}
+                    // проверка телефона и пароля
+                    onChange={() => checkAuth()}
                 />
-                { isPasswordValid
+
+                {/* { isPasswordValid
                     ?
                     <p style={{color: '#C8FA60', fontSize: '16px', fontWeight: 700}}>Valid Password</p>
                     :
                     <p style={{color: '#BF4342', fontSize: '16px', fontWeight: 700}}>Invalid Password</p>
+                } */}
+
+                {/* проверка телефона и пароля */}
+                {isAuth
+                    ?
+                    <p style={{color: '#C8FA60', fontSize: '14px', fontWeight: 700}}>Valid data</p>
+                    :
+                    <p style={{color: '#BF4342', fontSize: '14px', fontWeight: 700}}>Invalid password or username doesn't exist</p>
                 }
+
                 {/* <button className={styles.enter__btn}>Войти в систему</button> */}
                 <div className={styles.forget__password}>
                     <a href='#' className={styles.forget__password__a}>Забыли пароль?</a>
