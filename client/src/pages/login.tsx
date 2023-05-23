@@ -82,7 +82,7 @@ function Login() {
         {
             phoneNumInput.current.value=""
             passwordInput.current.value=""
-            // setIsFailLogin(false)
+            setIsFailLogin(false)
         }
     }
 
