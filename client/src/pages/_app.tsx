@@ -8,6 +8,7 @@ import {Lexend} from "next/font/google";
 import Home from "@/pages/index";
 import DraggableMenuItem from "@/Components/UI/draggableMenu/DraggableMenu";
 
+
 const lexend = Lexend({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],

@@ -122,3 +122,67 @@ button
   /*background-color: #C8FA60;*/
   box-shadow: 0px 0px 4px 15px #AED6F7;
 }
+
+.react-calendar__navigation{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 15px;
+  border-bottom: 1px solid black;
+  border-radius: 10px;
+}
+
+.react-calendar__navigation__label{
+  background: white;
+  font-size: 1rem;
+  width: 50%;
+
+}
+.react-calendar__viewContainer{
+  margin-top: 15px;
+}
+
+.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__arrow.react-calendar__navigation__next2-button{
+  display: none;
+}
+
+.react-calendar__navigation__arrow.react-calendar__navigation__prev-button{
+  width: 20px;
+  height: 20px;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right:15px solid grey;
+  color: transparent;
+  background: transparent;
+  margin-right: 20px;
+}
+
+
+.react-calendar__navigation__arrow.react-calendar__navigation__next-button{
+  width: 20px;
+  height: 20px;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left:15px solid grey;
+  color: transparent;
+  background: transparent;
+  margin-left: 20px;
+}
+
+.react-calendar__month-view__weekdays{
+  text-align: center;
+}
+
+.react-calendar__tile.react-calendar__month-view__days__day{
+  padding: 10px;
+  background: transparent;
+  font-size: 1rem;
+}
+.react-calendar__month-view__weekdays__weekday{
+  padding: 10px;
+}
+
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth{
+  color: grey;
+}
