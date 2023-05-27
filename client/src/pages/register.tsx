@@ -4,6 +4,7 @@ import styles from '@/styles/Register.module.css'
 function register() {
     const [isAccepted, setIsAccepted] = useState(false)
 
+
     return (
         <div className={styles.container}>
             <div className={styles.innr__text}>
@@ -17,7 +18,7 @@ function register() {
                 <input type="password" className={styles.form__password} id='password' placeholder='Повторите пароль' required />
                 <div className={styles.agreement}>
                     {/* <input className={styles.checkbox} type="checkbox" id="checkbox" name="checkbox" value="" /> */}
-                    
+
                     <label className={styles.accept}>
                      <input checked={isAccepted} onChange={() => setIsAccepted(prevState => !prevState)} className={styles.checkbox} type="checkbox" name="accept" />
                         <p className={styles.agreement__text}>
