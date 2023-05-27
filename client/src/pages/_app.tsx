@@ -20,44 +20,10 @@ export default function App({ Component, pageProps }: AppProps) {
   const hiddenRoutes = ['/register', '/login', '/scanning'];
   const isHiddenRoute = hiddenRoutes.includes(router.pathname);
 
-  function DraggableComponent() {
-    const draggableRef = useRef(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-    const handleTouchStart = (event) => {
-      const touch = event.touches[0];
-      const { left, top } = draggableRef.current.getBoundingClientRect();
-      setIsDragging(true);
-      setDragOffset({
-        x: touch.clientX - left,
-        y: touch.clientY - top,
-      });
-    };
-
-    const handleTouchMove = (event) => {
-      if (isDragging) {
-        const touch = event.touches[0];
-        setPosition({
-          x: touch.clientX - dragOffset.x,
-          y: touch.clientY - dragOffset.y,
-        });
-      }
-    };
-
-    const handleTouchEnd = () => {
-      setIsDragging(false);
-    };
-  }
   return(
     <>
         <Provider store={store}>
             {!isHiddenRoute && <DraggableMenuItem
-              ref={draggableRef}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
             />}
             <Home/>
             <style jsx global>{`
