@@ -18,24 +18,24 @@ function DraggableMenuItem(props) {
                style={{ boxShadow: '0px 0px 15px 10px #AED6F7'}}
                iconResting={<Image width='100%' height='100%' src={burger} alt=""/>}
                iconActive={<div>X</div>}
-               backgroundColor="black"
+               backgroundcolor="black"
                onClick={() => setIsOpen(prevState => !prevState)}
                size={56}
            />
            <ChildButton
                icon={<div>+</div>}
-               backgroundColor="white"
+               backgroundcolor="white"
                size={40}
                onClick={() => console.log('First button clicked')}
            />
            <ChildButton
                icon={<div>+</div>}
-               backgroundColor="white"
+               backgroundcolor="white"
                size={40}
            />
            <ChildButton
                icon={<div>+</div>}
-               backgroundColor="white"
+               backgroundcolor="white"
                size={40}
            />
        </FloatingMenu>

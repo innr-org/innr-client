@@ -1,0 +1,74 @@
+.admin{
+    position: relative;
+    display: grid;
+    grid-template-columns: 100%;
+    justify-items: center;
+    align-items: center;
+    height: 100vh;
+    padding: 25px 20px;
+}
+
+.container{
+    max-width: 480px;
+}
+
+.title{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.subTitle{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0 25px;
+}
+
+.admin form h2{
+    text-align: left;
+    font-size: 1.2rem;
+    color: #9260FA;
+}
+
+.specText{
+    margin-bottom: 10px;
+}
+
+.container input{
+    width: 100%;
+    padding: 10px 15px;
+    box-shadow: 0px 0px 10px #9260FA;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+
+.container input:focus{
+    outline: none !important;
+    border:1px solid #9260FA;
+    box-shadow: 0 0 10px 5px #9260FA;
+}
+
+.specInput{
+    margin-bottom: 30px;
+}
+
+.experienceText{
+    margin-bottom: 5px;
+}
+
+.experience{
+    background-color: #9260FA;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.experience:focus{
+    outline: none !important;
+    border: none;
+}
+
+

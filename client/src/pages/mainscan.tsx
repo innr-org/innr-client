@@ -1,9 +1,12 @@
 import React from 'react'
-import classes from "@/styles/MainScan.module.css";
-import AnalysisCard from "@/Components/AnalysisCard";
-import Footer from "@/Components/Footer";
-import DraggableMenu from "@/Components/UI/draggableMenu/DraggableMenu"
 import {useRouter} from "next/router";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from "swiper";
+import classes from "@/styles/MainScan.module.css";
+import Footer from "@/Components/Footer";
+import 'swiper/css';
+import 'swiper/css/pagination'
+
 
 function mainscan() {
     const router = useRouter()
@@ -32,7 +35,30 @@ function mainscan() {
             <section className={classes.analysis}>
                 <div className={classes.container}>
                     <h2 className={classes.analysisTitle}>Список Анализов</h2>
-                    <AnalysisCard />
+                    <Swiper
+                        slidesPerView={3}
+                        spaceBetween={80}
+                        className="mySwiper"
+                    >
+                        <SwiperSlide>
+                            <img src="../scanImgs/analysis-img.png" alt="analysis" />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={classes.sliderItem}>
+                                <img src="../scanIcons/plus.svg" alt="plus" />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={classes.sliderItem}>
+                                <img src="../scanIcons/plus.svg" alt="plus" />
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={classes.sliderItem}>
+                                <img src="../scanIcons/plus.svg" alt="plus" />
+                            </div>
+                        </SwiperSlide>
+                    </Swiper>
                 </div>
             </section>
 

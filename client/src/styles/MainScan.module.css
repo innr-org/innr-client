@@ -1,13 +1,13 @@
 .container
 {
-    max-width: 335px;
+    max-width: 480px;
+    padding: 0px 20px;
     margin: 0 auto;
 }
 .scan
 {
     position: relative;
     min-height: 391px;
-    padding-left: 20px;
 }
 
 .scanGradientHeader
@@ -95,7 +95,6 @@
     position: relative;
     min-height: 266px;
     margin-top: 32px;
-    padding-left: 20px;
     z-index: 5;
 }
 
@@ -106,4 +105,15 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 25px;
+    margin-bottom: 15px;
+}
+
+.sliderItem{
+    min-width: 121px;
+    min-height: 100px;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

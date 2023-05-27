@@ -9,6 +9,7 @@ import Modal from "@/Components/UI/modal/Modal";
 import Button from "@/Components/UI/button/Button";
 import {RootState} from "../../store";
 import { useRouter } from 'next/router'
+import axios from "axios";
 
 function Video({styles, isClicked, setIsClicked, scanType}) {
     //router init
@@ -150,6 +151,14 @@ function Video({styles, isClicked, setIsClicked, scanType}) {
                 prediction[0].scaledMesh[meshSettings.dxInit][0] - prediction[0].scaledMesh[meshSettings.x0][0],
                 prediction[0].scaledMesh[meshSettings.dyInit][1] - prediction[0].scaledMesh[meshSettings.y0][1])
 
+            // ctx.drawImage(webcamRef.current.video,
+            //      prediction[0].boundingBox.topLeft[0], prediction[0].boundingBox.topLeft[1],
+            //      prediction[0].boundingBox.bottomRight[0]- prediction[0].boundingBox.topLeft[0],
+            //      prediction[0].boundingBox.bottomRight[1]- prediction[0].boundingBox.topLeft[1],
+            //     0, 0,
+            //     prediction[0].boundingBox.bottomRight[0]- prediction[0].boundingBox.topLeft[0],
+            //     prediction[0].boundingBox.bottomRight[1]- prediction[0].boundingBox.topLeft[1],
+            // )
 
             //DEV: drawing bounding box (real-time)
             // prediction.forEach(pred => {
@@ -173,9 +182,17 @@ function Video({styles, isClicked, setIsClicked, scanType}) {
         setIsReady(false)
     }
 
-    function saveResult(img){
+    async function saveResult(img){
         dispatch(save(img))
-        router.push('/results')
+
+        // const response = await axios.post("http://164.92.164.196:8080/api/scan", {
+        //     data: {
+        //         "image": img
+        //     }
+        // }).catch(err => console.log(err));
+        // console.log(response)
+        //
+        // router.push('/results')
     }
 
     return (
@@ -192,7 +209,7 @@ function Video({styles, isClicked, setIsClicked, scanType}) {
                 <canvas ref={canvasRef} className={cl.canvas}/>
                 <div className={cl.resultBtns}>
                     <Button className={cl.retryBtn} onClick={closeResultsModal}>Переснять?</Button>
-                    <Button className={cl.submitBtn} onClick={() => saveResult(canvasRef.current.toDataURL("image/jpg"))}>Подтвердить!</Button>
+                    <Button className={cl.submitBtn} onClick={() => saveResult(canvasRef.current.toDataURL("image/jpeg"))}>Подтвердить!</Button>
                 </div>
             </Modal>
         </>
