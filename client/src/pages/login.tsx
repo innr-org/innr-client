@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {useRouter} from "next/router";
 import axios from "axios";
 import styles from '../styles/Login.module.css';
@@ -9,44 +9,136 @@ import facebook from '../../public/assets/images/fb.svg';
 import google from '../../public/assets/images/gg.svg';
 import Modal from "@/Components/UI/modal/Modal";
 import Button from "@/Components/UI/button/Button";
-import {useFetching} from "@/hooks/useFetching";
-import UserService from "@/API/UserService";
 
 
 function Login() {
-    const router = useRouter()
-    const phoneNumInput = useRef(null)
-    const passwordInput = useRef(null)
+    const phoneNumInput = useRef<HTMLInputElement>(null)
+    const passwordInput = useRef<HTMLInputElement>(null)
     const [isFailLogin, setIsFailLogin] = useState(false)
-    const [fetchLogin, isAuthorizing, error] = useFetching(async () => {
-        const loginResponse = await UserService.login({
-            'phone': '5555',
-            'password': 'abc123',
-        })
+    const querystring = require('qs');
+    const router = useRouter()
 
-        if(loginResponse.status===200){
-            console.log("Authorized")
-            router.push("/mainscan")
-        }
-        else{
-            console.log("Not Authorized")
-        }
-    })
+    // RegEx for validation phone number with or without spaces, dots, etc
+    // This regular expression will match phone numbers entered with delimiters (spaces, dots, brackets, etc.)
+    const phoneNumberRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
 
-    useEffect(() => {
-        console.log(error)
-    }, [error])
+    // /^\+?[1-9][0-9]{7,14}$/  -> The basic international phone number validation
 
-    async function login(e){
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
+    const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false)
+    const [isPasswordValid, setIsPasswordValid] = useState(false)
+
+    const [isAuth, setIsAuth] = useState(false)
+
+
+    const details = {
+        'phone': '8888',
+        'password': 'abc123',
+    };
+
+    async function login(e: any){
         e.preventDefault()
+        // const details = {
+        //     'phone': '+7 776 521 3035',
+        //     'password': 'Sdfgh67@',
+        // };
+        // const details = {
+        //     'phone': '8888',
+        //     'password': 'abc123',
+        // };
+        // const details = {
+        //     'phone': phoneNumInput.current?.value,
+        //     'password': passwordInput.current?.value,
+        // };
+        try {
+            const formBody: any[] = [];
+            for (const property in details) {
+                const encodedKey = encodeURIComponent(property);
+                const encodedValue = encodeURIComponent(details[property as keyof typeof details]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            const formBodyString = formBody.join("&");
+            
+            const response = await fetch('http://164.92.164.196:8080/api/auth/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBodyString
+            })
+            console.log(response)
 
-        await fetchLogin()
+            if (response.status===200) {
+                console.log("Authorized")
+                router.push('/mainscan')
+            }
+            else if (response.status===401) {
+                console.log("LOGIN ERROR, 401 Unauthorized")
+                // setIsFailLogin(true)
+                // setIsAuth(false)
+            }
+        }
+        catch (err) {
+            console.error(err)
+        }
     }
 
-    function clearForm(){
-        phoneNumInput.current.value=""
-        passwordInput.current.value=""
-        setIsFailLogin(false)
+
+    function clearForm()
+    {
+        if (phoneNumInput.current !== null && passwordInput.current !== null)
+        {
+            phoneNumInput.current.value=""
+            passwordInput.current.value=""
+            setIsFailLogin(false)
+        }
+    }
+
+
+    function checkAuth(event: ChangeEvent<HTMLInputElement>)
+    {
+        if (phoneNumInput.current !== null && passwordInput.current !== null)
+        {
+            if (phoneNumInput.current.value === details['phone'] && passwordInput.current.value === details['password'])
+            {
+                setIsAuth(true)
+            }
+            else
+            {
+                setIsAuth(false)
+            }
+        }
+    }
+
+    function phoneNumberValidation(event: ChangeEvent<HTMLInputElement>)
+    {
+        if (phoneNumInput.current !== null)
+        {   
+            if (phoneNumberRegex.test(phoneNumInput.current.value))
+            {
+                setIsPhoneNumberValid(true)
+            }
+            else
+            {
+                setIsPhoneNumberValid(false)
+            }
+        }
+    }
+
+    function passwordValidation(event: ChangeEvent<HTMLInputElement>)
+    {
+        if (passwordInput.current !== null)
+        {   
+            if (passwordRegex.test(passwordInput.current.value))
+            {
+                setIsPasswordValid(true)
+            }
+            else
+            {
+                setIsPasswordValid(false)
+            }
+        }
     }
 
     return (
@@ -70,8 +162,54 @@ function Login() {
                 <h1 className={styles.welcome__h1}>Добро пожаловать!</h1>
             </div>
             <form className={styles.login__form} onSubmit={(e) => login(e)}>
-                <input ref={phoneNumInput} type="text" className={styles.email} id='email' placeholder='Ваш номер телефона' required/>
-                <input ref={passwordInput} type="password" className={styles.password} id='password' placeholder='Пароль' required />
+                <input
+                    ref={phoneNumInput}
+                    type="text"
+                    className={styles.email}
+                    id='email'
+                    placeholder='Ваш номер телефона'
+                    required
+                    // onChange={() => phoneNumberValidation()}
+                    // onChange={() => checkAuth(details['phone'], details['password'])}
+                    // проверка телефона и пароля
+                    onChange={() => checkAuth()}
+                />
+
+                {/* { isPhoneNumberValid 
+                    ? 
+                    <p style={{color: '#C8FA60', fontSize: '16px', fontWeight: 700}}>Valid Phone Number</p>
+                    :
+                    <p style={{color: '#BF4342', fontSize: '16px', fontWeight: 700}}>Invalid Phone Number</p>
+                } */}
+                
+                <input
+                    ref={passwordInput}
+                    type="password"
+                    className={styles.password}
+                    id='password'
+                    placeholder='Пароль'
+                    required
+                    // onChange={() => passwordValidation()}
+                    // onChange={() => checkAuth(details['phone'], details['password'])}
+                    // проверка телефона и пароля
+                    onChange={() => checkAuth()}
+                />
+
+                {/* { isPasswordValid
+                    ?
+                    <p style={{color: '#C8FA60', fontSize: '16px', fontWeight: 700}}>Valid Password</p>
+                    :
+                    <p style={{color: '#BF4342', fontSize: '16px', fontWeight: 700}}>Invalid Password</p>
+                } */}
+
+                {/* проверка телефона и пароля */}
+                {isAuth
+                    ?
+                    <p style={{color: '#C8FA60', fontSize: '14px', fontWeight: 700}}>Valid data</p>
+                    :
+                    <p style={{color: '#BF4342', fontSize: '14px', fontWeight: 700}}>Invalid password or username doesn't exist</p>
+                }
+
                 {/* <button className={styles.enter__btn}>Войти в систему</button> */}
                 <div className={styles.forget__password}>
                     <a href='#' className={styles.forget__password__a}>Забыли пароль?</a>
